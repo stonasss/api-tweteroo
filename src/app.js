@@ -34,18 +34,18 @@ app.post("/tweets", (req, res) => {
   const message = tweet.tweet;
   const currentUser = users.find((item) => item.username === tweet.username);
 
-  if (tweets.length == 0) {
+  if (tweets.length == 0 && currentUser) {
     tweet.avatar = avatar;
     tweets.unshift(tweet);
-    res.send("OK");
+    return res.status(201).send("OK");
   } else if (message.length == 0) {
     return res.status(401).send("Tweet vazio não é permitido");
   } else if (currentUser) {
     tweet.avatar = avatar;
     tweets.unshift(tweet);
-    res.send("OK");
+    return res.status(201).send("OK");
   } else {
-    res.send("UNAUTHORIZED");
+    return res.status(401).send("UNAUTHORIZED");
   }
 });
 
