@@ -16,11 +16,14 @@ app.post("/sign-up", (req, res) => {
   const user = req.body;
   const name = user.username;
   avatar = user.avatar;
-  if (name.length == 0){
-    return res.status(401).send("Preencha os campos vazios!");
+  if (typeof avatar !== "string" || typeof name !== "string"){
+    return res.status(400).send("UNAUTHORIZED");
+  } else if (avatar.length == 0 || name.length == 0) {
+    return res.status(400).send("Preencha os campos vazios!")
+  } else if (avatar == null || name == null) {
+    return res.status(400).send("UNAUTHORIZED")
   }
   users.push(user);
-  console.log(user);
   return res.status(201).send("OK");
 });
 
@@ -38,18 +41,22 @@ app.post("/tweets", (req, res) => {
   const message = tweet.tweet;
   const currentUser = users.find((item) => item.username === tweet.username);
 
-  if (tweets.length == 0 && currentUser) {
+  if (tweets.length == 0 && currentUser && typeof message === "string" && message.length !== 0) {
     tweet.avatar = avatar;
     tweets.unshift(tweet);
     return res.status(201).send("OK");
+  } else if (typeof message !== "string") {
+    return res.status(400).send("UNAUTHORIZED")
   } else if (message.length == 0) {
-    return res.status(401).send("Tweet vazio não é permitido");
+    return res.status(400).send("Tweet vazio não é permitido!");
+  } else if (message == null) {
+    return res.status(400).send("UNAUTHORIZED");
   } else if (currentUser) {
     tweet.avatar = avatar;
     tweets.unshift(tweet);
     return res.status(201).send("OK");
   } else {
-    return res.status(401).send("UNAUTHORIZED");
+    return res.status(400).send("UNAUTHORIZED");
   }
 });
 
