@@ -14,10 +14,14 @@ let avatar = "";
 app.post("/sign-up", (req, res) => {
   avatar = [];
   const user = req.body;
+  const name = user.username;
   avatar = user.avatar;
+  if (name.length == 0){
+    return res.status(401).send("Preencha os campos vazios!");
+  }
   users.push(user);
   console.log(user);
-  res.send("OK");
+  return res.status(201).send("OK");
 });
 
 app.get("/tweets", (req, res) => {
