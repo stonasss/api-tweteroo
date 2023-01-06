@@ -14,7 +14,7 @@ let avatar = "";
 app.post("/sign-up", (req, res) => {
   avatar = [];
   const user = req.body;
-  avatar.push(user.avatar);
+  avatar = user.avatar;
   users.push(user);
   console.log(user);
   res.send("OK");
