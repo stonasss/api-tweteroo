@@ -65,6 +65,12 @@ app.post("/tweets", (req, res) => {
   }
 });
 
+app.get("/tweets/:username", (req, res) => {
+  const username = req.params.username;
+  const userTweets = tweets.filter((tweet) => tweet.username === username);
+  res.send(userTweets);
+})
+
 app.listen(PORT, () => {
   console.log("servidor está aberto!");
 });
